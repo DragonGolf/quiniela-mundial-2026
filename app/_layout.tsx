@@ -4,16 +4,18 @@ import { StatusBar } from 'expo-status-bar';
 import { AuthProvider, useAuth } from '@/lib/auth';
 
 function RootNavigator() {
-  const { session, loading } = useAuth();
+  const { session, loading, passwordRecovery } = useAuth();
 
   useEffect(() => {
     if (loading) return;
-    if (session) {
+    if (passwordRecovery) {
+      router.replace('/(auth)/reset-password');
+    } else if (session) {
       router.replace('/(tabs)');
     } else {
       router.replace('/(auth)/login');
     }
-  }, [session, loading]);
+  }, [session, loading, passwordRecovery]);
 
   return (
     <>

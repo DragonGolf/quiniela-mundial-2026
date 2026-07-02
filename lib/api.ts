@@ -71,6 +71,18 @@ export async function getRanking(): Promise<RankingEntry[]> {
   return data || [];
 }
 
+export async function sendPasswordReset(email: string, redirectTo: string) {
+  const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+    redirectTo,
+  });
+  if (error) throw error;
+}
+
+export async function updatePassword(newPassword: string) {
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+}
+
 export async function triggerMatchSync() {
   const { error } = await supabase.functions.invoke('sync-matches');
   if (error) throw error;
